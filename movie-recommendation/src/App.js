@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios"; // Import axios for HTTP requests
 import SearchBar from "./components/SearchBar";
 import RecommendationsList from "./components/RecommendationsList";
 import "./App.css";
@@ -14,8 +15,17 @@ function App() {
     setError("");
     setRecommendations([]);
 
+    if (!movie.trim()) {
+      setError("Please enter a movie title.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch(`http://localhost:5000/recommend?title=${movie}`);
+      const response = await axios.get(`http://127.0.0.1:5001/recommend?title=${movie}`);
+      console.log("Response data:", response.data); // Log the response from the backend
+      setRecommendations(response.data.recommendations || []);
+      console.log("Updated recommendations:", response.data.recommendations); // Debug
       if (!response.ok) {
         throw new Error("Failed to fetch recommendations.");
       }
@@ -40,5 +50,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;

@@ -14,4 +14,5 @@ function RecommendationsList({ recommendations, loading, error }) {
   );
 }
 
+
 export default RecommendationsList;
